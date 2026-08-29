@@ -25,4 +25,11 @@ function completeTodo(projectName, title) {
     targetProject.completedTodos.unshift(todo);
 }
 
-export { createTodo, deleteTodo, completeTodo };
+function uncompleteTodo(projectName, title) {
+    const targetProject = projects.find((project) => project.name === projectName);
+    const index = targetProject.completedTodos.findIndex((todo) => todo.title === title);
+    const [todo] = targetProject.completedTodos.splice(index, 1);
+    targetProject.pendingTodos.unshift(todo);
+}
+
+export { createTodo, deleteTodo, completeTodo, uncompleteTodo };
