@@ -1,6 +1,6 @@
 import { projects } from "./projects.js";
 
-function createToDo(projectName, title, description, dueDate, priority) {
+function createTodo(projectName, title, description, dueDate, priority) {
     const todo = {
         title,
         description,
@@ -9,15 +9,20 @@ function createToDo(projectName, title, description, dueDate, priority) {
     };
 
     const targetProject = projects.find((project) => project.name === projectName);
-    targetProject.todos.push(todo);
+    targetProject.pendingTodos.push(todo);
 }
 
-function deleteToDo(projectName, title) {
+function deleteTodo(projectName, title) {
     const targetProject = projects.find((project) => project.name === projectName);
-
-    const index = targetProject.todos.findIndex((todo) => todo.title === title);
-
-    targetProject.todos.splice(index, 1);
+    const index = targetProject.pendingTodos.findIndex((todo) => todo.title === title);
+    targetProject.pendingTodos.splice(index, 1);
 }
 
-export { createToDo, deleteToDo };
+function completeTodo(projectName, title) {
+    const targetProject = projects.find((project) => project.name === projectName);
+    const index = targetProject.pendingTodos.findIndex((todo) => todo.title === title);
+    const [todo] = targetProject.pendingTodos.splice(index, 1);
+    targetProject.completedTodos.unshift(todo);
+}
+
+export { createTodo, deleteTodo, completeTodo };

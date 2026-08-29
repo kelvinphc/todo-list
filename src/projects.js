@@ -3,7 +3,8 @@ const projects = [];
 function createProject(name) {
     const project = {
         name,
-        todos: []
+        pendingTodos: [],
+        completedTodos: []
     };
 
     projects.push(project);
