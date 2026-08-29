@@ -9,4 +9,10 @@ function createProject(name) {
     projects.push(project);
 }
 
-export { projects, createProject };
+function deleteProject(name) {
+    const projectIndex = projects.findIndex((project) => project.name === name);
+
+    projects.splice(projectIndex, 1);
+}
+
+export { projects, createProject, deleteProject };
