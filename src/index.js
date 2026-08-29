@@ -4,8 +4,6 @@ import { createToDo } from "./todos.js";
 
 //testing area
 createProject("Tasks");
-createProject("Work");
-createProject("Holiday");
-console.log(projects);
-deleteProject("Holiday");
+createToDo("Tasks", "a", "b", "c", "d");
+createToDo("Tasks", "e", "f", "g", "h");
 console.log(projects);

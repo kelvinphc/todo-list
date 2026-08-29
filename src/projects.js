@@ -10,9 +10,9 @@ function createProject(name) {
 }
 
 function deleteProject(name) {
-    const projectIndex = projects.findIndex((project) => project.name === name);
+    const index = projects.findIndex((project) => project.name === name);
 
-    projects.splice(projectIndex, 1);
+    projects.splice(index, 1);
 }
 
 export { projects, createProject, deleteProject };
