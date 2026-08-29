@@ -12,4 +12,12 @@ function createToDo(projectName, title, description, dueDate, priority) {
     targetProject.todos.push(todo);
 }
 
-export { createToDo };
+function deleteToDo(projectName, title) {
+    const targetProject = projects.find((project) => project.name === projectName);
+
+    const index = targetProject.todos.findIndex((todo) => todo.title === title);
+
+    targetProject.todos.splice(index, 1);
+}
+
+export { createToDo, deleteToDo };
