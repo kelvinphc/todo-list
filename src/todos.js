@@ -52,4 +52,16 @@ function changeTodoDescription(todo) {
     }
 }
 
-export { createTodo, deleteTodo, completeTodo, uncompleteTodo, changeTodoTitle, changeTodoDescription };
+function changeTodoPriority(todo) {
+    todo.priorty = todo.priority === "High" ? "Low" : "High";
+}
+
+export { 
+    createTodo, 
+    deleteTodo, 
+    completeTodo, 
+    uncompleteTodo, 
+    changeTodoTitle, 
+    changeTodoDescription, 
+    changeTodoPriority
+};

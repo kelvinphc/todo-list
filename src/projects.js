@@ -26,4 +26,8 @@ function changeProjectTitle(project) {
     }
 }
 
-export { projects, createProject, deleteProject };
+export { 
+    projects, 
+    createProject, 
+    deleteProject 
+};
