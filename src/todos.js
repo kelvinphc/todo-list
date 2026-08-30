@@ -32,4 +32,14 @@ function uncompleteTodo(projectName, title) {
     targetProject.pendingTodos.unshift(todo);
 }
 
-export { createTodo, deleteTodo, completeTodo, uncompleteTodo };
+function changeTodoTitle(todo) {
+    const newTitle = prompt("Please enter new title");
+
+    if (newTitle === null) {
+        return;
+    } else {
+        todo.title = newTitle;
+    }
+}
+
+export { createTodo, deleteTodo, completeTodo, uncompleteTodo, changeTodoTitle };
