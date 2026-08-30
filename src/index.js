@@ -1,6 +1,6 @@
 import "./styles.css";
 import { projects, createProject, deleteProject } from "./projects.js";
-import { createTodo, deleteTodo, completeTodo, uncompleteTodo, changeTodoTitle } from "./todos.js";
+import { createTodo, deleteTodo, completeTodo, uncompleteTodo, changeTodoTitle, changeTodoDescription } from "./todos.js";
 
 //testing area
 const myTodo = { title: "Old title", description: "", dueDate: "", priority: "" };
