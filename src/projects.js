@@ -1,4 +1,4 @@
-const projects = [];
+let projects = [];
 
 function createProject(title) {
     const project = {
@@ -26,8 +26,19 @@ function changeProjectTitle(project) {
     }
 }
 
+function saveProjects() {
+    localStorage.setItem("projects", JSON.stringify(projects));
+}
+
+function loadProjects() {
+    projects = JSON.parse(localStorage.getItem("projects"));
+}
+
 export { 
     projects, 
     createProject, 
-    deleteProject 
+    deleteProject, 
+    changeProjectTitle,
+    saveProjects,
+    loadProjects
 };

@@ -2,7 +2,10 @@ import "./styles.css";
 import { 
     projects, 
     createProject, 
-    deleteProject 
+    deleteProject, 
+    changeProjectTitle,
+    saveProjects,
+    loadProjects
 } from "./projects.js";
 import { 
     createTodo, 
@@ -11,11 +14,15 @@ import {
     uncompleteTodo, 
     changeTodoTitle, 
     changeTodoDescription, 
+    changeTodoDueDate,
     changeTodoPriority
 } from "./todos.js";
 
 //testing area
-const myTodo = { title: "Old title", description: "", dueDate: "", priority: "" };
-console.log(myTodo);
-changeTodoTitle(myTodo);
-console.log(myTodo);
+if(!localStorage.getItem("projects")) {
+    saveProjects();
+} else {
+    loadProjects();
+}
+
+console.log(projects);

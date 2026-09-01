@@ -1,4 +1,5 @@
 import { projects } from "./projects.js";
+import { compareAsc, format } from "date-fns";
 
 function createTodo(projectTitle, title, description, dueDate, priority) {
     const todo = {
@@ -35,9 +36,7 @@ function uncompleteTodo(projectTitle, title) {
 function changeTodoTitle(todo) {
     const newTitle = prompt("Please enter new title");
 
-    if (newTitle === null) {
-        return;
-    } else {
+    if (newTitle !== null) {
         todo.title = newTitle;
     }
 }
@@ -45,11 +44,13 @@ function changeTodoTitle(todo) {
 function changeTodoDescription(todo) {
     const newDescription = prompt("Please enter new description");
 
-    if (newDescription === null) {
-        return;
-    } else {
+    if (newDescription !== null) {
         todo.description = newDescription;
     }
+}
+
+function changeTodoDueDate(todo, newDueDate) {
+    todo.dueDate = newDueDate;
 }
 
 function changeTodoPriority(todo) {
@@ -63,5 +64,6 @@ export {
     uncompleteTodo, 
     changeTodoTitle, 
     changeTodoDescription, 
+    changeTodoDueDate,
     changeTodoPriority
 };
