@@ -17,12 +17,13 @@ import {
     changeTodoDueDate,
     changeTodoPriority
 } from "./todos.js";
+import { 
+    renderProjects
+} from "./ui.js";
 
 //testing area
-if(!localStorage.getItem("projects")) {
-    saveProjects();
-} else {
-    loadProjects();
-}
+createProject("Tasks");
+createProject("Work");
+createProject("Personal");
 
-console.log(projects);
+renderProjects();
