@@ -30,4 +30,32 @@ function renderProjects() {
     projectsDiv.appendChild(ul);
 }
 
-export { renderProjects };
+function renderTodos(title) {
+    const project = projects.find(project => project.title === title);
+    const pendingDiv = document.getElementById("pending");
+    const pendingUl = document.createElement("ul");
+    const pendingTodos = project.pendingTodos;
+    const completedDiv = document.getElementById("completed");
+    const completedUl = document.createElement("ul");
+    const completedTodos = project.completedTodos;
+
+    for (let pendingTodo of pendingTodos) {
+        const li = document.createElement("li");
+        li.textContent = pendingTodo.title;
+        pendingUl.appendChild(li);
+    };
+
+    for (let completedTodo of completedTodos) {
+        const li = document.createElement("li");
+        li.textContent = completedTodo.title;
+        completedUl.appendChild(li);
+    };
+
+    pendingDiv.appendChild(pendingUl);
+    completedDiv.appendChild(completedUl);
+}
+
+export { 
+    renderProjects,
+    renderTodos,
+ };
