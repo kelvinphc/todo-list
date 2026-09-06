@@ -2,6 +2,7 @@ let projects = [];
 
 function createProject(title) {
     const project = {
+        uuid: crypto.randomUUID(),
         title,
         pendingTodos: [],
         completedTodos: []
@@ -10,8 +11,8 @@ function createProject(title) {
     projects.push(project);
 }
 
-function deleteProject(title) {
-    const index = projects.findIndex((project) => project.title === title);
+function deleteProject(uuid) {
+    const index = projects.findIndex((project) => project.uuid === uuid);
 
     projects.splice(index, 1);
 }

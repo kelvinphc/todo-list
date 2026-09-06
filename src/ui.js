@@ -30,8 +30,8 @@ function renderProjects() {
     projectsDiv.appendChild(ul);
 }
 
-function renderTodos(title) {
-    const project = projects.find(project => project.title === title);
+function renderTodos(uuid) {
+    const project = projects.find(project => project.uuid === uuid);
     const pendingDiv = document.getElementById("pending");
     const pendingUl = document.createElement("ul");
     const pendingTodos = project.pendingTodos;
@@ -53,6 +53,10 @@ function renderTodos(title) {
 
     pendingDiv.appendChild(pendingUl);
     completedDiv.appendChild(completedUl);
+}
+
+function renderTodoDetails(uuid) {
+
 }
 
 export { 
