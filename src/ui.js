@@ -18,7 +18,7 @@ import {
 } from "./todos.js";
 
 function renderProjects() {
-    const projectsDiv = document.getElementById("projects");
+    const div = document.getElementById("projects");
     const ul = document.createElement("ul");
 
     for (let project of projects) {
@@ -27,7 +27,7 @@ function renderProjects() {
         ul.appendChild(li);
     };
 
-    projectsDiv.appendChild(ul);
+    div.appendChild(ul);
 }
 
 function renderTodos(uuid) {
@@ -55,11 +55,35 @@ function renderTodos(uuid) {
     completedDiv.appendChild(completedUl);
 }
 
-function renderTodoDetails(uuid) {
+function renderTodoDetails(todo) {
+    const title = todo.title;
+    const description = todo.description;
+    const dueDate = todo.dueDate;
+    const priority = todo.priority;
+    const div = document.getElementById("todo-details");
+    const ul = document.createElement("ul");
 
+    const titleLi = document.createElement("li");
+    titleLi.textContent = title;
+    ul.appendChild(titleLi);
+
+    const descriptionLi = document.createElement("li");
+    descriptionLi.textContent = description;
+    ul.appendChild(descriptionLi);
+
+    const dueDateLi = document.createElement("li");
+    dueDateLi.textContent = dueDate;
+    ul.appendChild(dueDateLi);
+
+    const priorityLi = document.createElement("li");
+    priorityLi.textContent = priority;
+    ul.appendChild(priorityLi);
+
+    div.appendChild(ul);
 }
 
 export { 
     renderProjects,
     renderTodos,
+    renderTodoDetails
  };
