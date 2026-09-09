@@ -32,6 +32,7 @@ function renderProjects() {
 
 function renderTodos(uuid) {
     const project = projects.find(project => project.uuid === uuid);
+    const title = document.querySelector("h1");
     const pendingDiv = document.getElementById("pending");
     const pendingUl = document.createElement("ul");
     const pendingTodos = project.pendingTodos;
@@ -51,6 +52,7 @@ function renderTodos(uuid) {
         completedUl.appendChild(li);
     };
 
+    title.textContent = project.title;
     pendingDiv.appendChild(pendingUl);
     completedDiv.appendChild(completedUl);
 }

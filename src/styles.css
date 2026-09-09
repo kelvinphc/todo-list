@@ -1,0 +1,16 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    display: grid;
+    grid-template-columns: 384px 1fr 384px;
+}
+
+ul {
+    list-style-type: none;
+    display: grid;
+    grid-auto-rows: 48px;
+    align-items: center;
+    padding-left: 0;
+}
