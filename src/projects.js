@@ -1,3 +1,5 @@
+import { notifyChange } from "./events.js";
+
 let projects = [];
 
 function createProject(title) {
@@ -9,12 +11,14 @@ function createProject(title) {
     };
 
     projects.push(project);
+    notifyChange();
 }
 
 function deleteProject(uuid) {
     const index = projects.findIndex((project) => project.uuid === uuid);
 
     projects.splice(index, 1);
+    notifyChange();
 }
 
 function changeProjectTitle(project) {
@@ -25,6 +29,8 @@ function changeProjectTitle(project) {
     } else {
         project.title = newTitle;
     }
+
+    notifyChange();
 }
 
 function saveProjects() {
@@ -32,7 +38,7 @@ function saveProjects() {
 }
 
 function loadProjects() {
-    projects = JSON.parse(localStorage.getItem("projects"));
+    projects = JSON.parse(localStorage.getItem("projects")) || [];
 }
 
 export { 

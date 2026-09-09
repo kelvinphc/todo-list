@@ -1,4 +1,5 @@
 import { projects } from "./projects.js";
+import { notifyChange } from "./events.js";
 import { compareAsc, format } from "date-fns";
 
 function createTodo(projectUuid, title, description, dueDate, priority) {
@@ -12,12 +13,14 @@ function createTodo(projectUuid, title, description, dueDate, priority) {
 
     const targetProject = projects.find((project) => project.uuid === projectUuid);
     targetProject.pendingTodos.push(todo);
+    notifyChange();
 }
 
 function deleteTodo(projectUuid, uuid) {
     const targetProject = projects.find((project) => project.uuid === projectUuid);
     const index = targetProject.pendingTodos.findIndex((todo) => todo.uuid === uuid);
     targetProject.pendingTodos.splice(index, 1);
+    notifyChange();
 }
 
 function completeTodo(projectUuid, uuid) {
@@ -25,6 +28,7 @@ function completeTodo(projectUuid, uuid) {
     const index = targetProject.pendingTodos.findIndex((todo) => todo.uuid === uuid);
     const [todo] = targetProject.pendingTodos.splice(index, 1);
     targetProject.completedTodos.unshift(todo);
+    notifyChange();
 }
 
 function uncompleteTodo(projectUuid, uuid) {
@@ -32,6 +36,7 @@ function uncompleteTodo(projectUuid, uuid) {
     const index = targetProject.completedTodos.findIndex((todo) => todo.uuid === uuid);
     const [todo] = targetProject.completedTodos.splice(index, 1);
     targetProject.pendingTodos.unshift(todo);
+    notifyChange();
 }
 
 function changeTodoTitle(todo) {
@@ -40,6 +45,8 @@ function changeTodoTitle(todo) {
     if (newTitle !== null) {
         todo.title = newTitle;
     }
+
+    notifyChange();
 }
 
 function changeTodoDescription(todo) {
@@ -48,14 +55,18 @@ function changeTodoDescription(todo) {
     if (newDescription !== null) {
         todo.description = newDescription;
     }
+
+    notifyChange();
 }
 
 function changeTodoDueDate(todo, newDueDate) {
     todo.dueDate = newDueDate;
+    notifyChange();
 }
 
 function changeTodoPriority(todo) {
     todo.priorty = todo.priority === "High" ? "Low" : "High";
+    notifyChange();
 }
 
 export { 
