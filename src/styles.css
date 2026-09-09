@@ -7,7 +7,7 @@ body {
     grid-template-columns: 384px 1fr 384px;
 }
 
-ul {
+#projects, #pending, #completed, #todo-details {
     list-style-type: none;
     display: grid;
     grid-auto-rows: 48px;

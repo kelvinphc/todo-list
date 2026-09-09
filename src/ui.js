@@ -18,43 +18,46 @@ import {
 } from "./todos.js";
 
 function renderProjects() {
-    const div = document.getElementById("projects");
-    const ul = document.createElement("ul");
+    const nav = document.getElementById("projects");
 
     for (let project of projects) {
-        const li = document.createElement("li");
-        li.textContent = project.title;
-        ul.appendChild(li);
-    };
+        const button = document.createElement("button");
+        button.textContent = project.title;
 
-    div.appendChild(ul);
+        button.addEventListener("click", () => {
+            const uuid = project.uuid;
+            
+            renderTodos(uuid);
+        })
+
+        nav.appendChild(button);
+    }
 }
 
 function renderTodos(uuid) {
     const project = projects.find(project => project.uuid === uuid);
     const title = document.querySelector("h1");
     const pendingDiv = document.getElementById("pending");
-    const pendingUl = document.createElement("ul");
     const pendingTodos = project.pendingTodos;
     const completedDiv = document.getElementById("completed");
-    const completedUl = document.createElement("ul");
     const completedTodos = project.completedTodos;
 
+    pendingDiv.innerHTML = "";
+    completedDiv.innerHTML = "";
+
     for (let pendingTodo of pendingTodos) {
-        const li = document.createElement("li");
-        li.textContent = pendingTodo.title;
-        pendingUl.appendChild(li);
-    };
+        const button = document.createElement("button");
+        button.textContent = pendingTodo.title;
+        pendingDiv.appendChild(button);
+    }
 
     for (let completedTodo of completedTodos) {
-        const li = document.createElement("li");
-        li.textContent = completedTodo.title;
-        completedUl.appendChild(li);
-    };
+        const button = document.createElement("button");
+        button.textContent = completedTodo.title;
+        completedDiv.appendChild(button);
+    }
 
     title.textContent = project.title;
-    pendingDiv.appendChild(pendingUl);
-    completedDiv.appendChild(completedUl);
 }
 
 function renderTodoDetails(todo) {
@@ -63,25 +66,22 @@ function renderTodoDetails(todo) {
     const dueDate = todo.dueDate;
     const priority = todo.priority;
     const div = document.getElementById("todo-details");
-    const ul = document.createElement("ul");
 
-    const titleLi = document.createElement("li");
-    titleLi.textContent = title;
-    ul.appendChild(titleLi);
+    const titleButton = document.createElement("button");
+    titleButton.textContent = title;
+    div.appendChild(titleButton);
 
-    const descriptionLi = document.createElement("li");
-    descriptionLi.textContent = description;
-    ul.appendChild(descriptionLi);
+    const descriptionButton = document.createElement("button");
+    descriptionButton.textContent = description;
+    div.appendChild(descriptionButton);
 
-    const dueDateLi = document.createElement("li");
-    dueDateLi.textContent = dueDate;
-    ul.appendChild(dueDateLi);
+    const dueDateButton = document.createElement("button");
+    dueDateButton.textContent = dueDate;
+    div.appendChild(dueDateButton);
 
-    const priorityLi = document.createElement("li");
-    priorityLi.textContent = priority;
-    ul.appendChild(priorityLi);
-
-    div.appendChild(ul);
+    const priorityButton = document.createElement("button");
+    priorityButton.textContent = priority;
+    div.appendChild(priorityButton);
 }
 
 export { 
