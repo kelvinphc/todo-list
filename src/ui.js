@@ -19,28 +19,29 @@ import {
 
 function renderProjects() {
     const nav = document.getElementById("projects");
+    const div = document.getElementById("todo-details");
 
     for (let project of projects) {
         const button = document.createElement("button");
         button.textContent = project.title;
 
         button.addEventListener("click", () => {
-            const uuid = project.uuid;
+            div.innerHTML = "";
             
-            renderTodos(uuid);
-        })
+            renderTodos(project);
+        });
 
         nav.appendChild(button);
     }
 }
 
-function renderTodos(uuid) {
-    const project = projects.find(project => project.uuid === uuid);
+function renderTodos(project) {
     const title = document.querySelector("h1");
     const pendingDiv = document.getElementById("pending");
     const pendingTodos = project.pendingTodos;
     const completedDiv = document.getElementById("completed");
     const completedTodos = project.completedTodos;
+    const detailsDiv = document.getElementById("todo-details");
 
     pendingDiv.innerHTML = "";
     completedDiv.innerHTML = "";
@@ -48,12 +49,26 @@ function renderTodos(uuid) {
     for (let pendingTodo of pendingTodos) {
         const button = document.createElement("button");
         button.textContent = pendingTodo.title;
+
+        button.addEventListener("click", () => {
+            detailsDiv.innerHTML = "";
+
+            renderTodoDetails(pendingTodo);
+        });
+
         pendingDiv.appendChild(button);
     }
 
     for (let completedTodo of completedTodos) {
         const button = document.createElement("button");
         button.textContent = completedTodo.title;
+
+        button.addEventListener("click", () => {
+            detailsDiv.innerHTML = "";
+            
+            renderTodoDetails(completedTodo);
+        });
+
         completedDiv.appendChild(button);
     }
 
