@@ -21,16 +21,11 @@ function deleteProject(uuid) {
     notifyChange();
 }
 
-function changeProjectTitle(project) {
-    const newTitle = prompt("Please enter new title");
-
-    if (newTitle === null) {
-        return;
-    } else {
+function changeProjectTitle(project, newTitle) {
+    if (newTitle.trim() !== "") {
         project.title = newTitle;
+        notifyChange();
     }
-
-    notifyChange();
 }
 
 function saveProjects() {

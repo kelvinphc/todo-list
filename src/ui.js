@@ -16,11 +16,14 @@ import {
     changeTodoDueDate,
     changeTodoPriority
 } from "./todos.js";
+import { 
+    notifyChange
+} from "./events.js";
 
 function renderProjects() {
     const projectsDiv = document.getElementById("projects");
     const detailsDiv = document.getElementById("todo-details");
-    
+
     projectsDiv.innerHTML = "";
 
     for (let project of projects) {
@@ -54,7 +57,6 @@ function renderTodos(project) {
 
         button.addEventListener("click", () => {
             detailsDiv.innerHTML = "";
-
             renderTodoDetails(pendingTodo);
         });
 
@@ -67,7 +69,6 @@ function renderTodos(project) {
 
         button.addEventListener("click", () => {
             detailsDiv.innerHTML = "";
-            
             renderTodoDetails(completedTodo);
         });
 
@@ -75,6 +76,16 @@ function renderTodos(project) {
     }
 
     title.textContent = project.title;
+
+    makeEditable(
+        title,
+        () => project.title,
+        (newValue) => {
+            changeProjectTitle(project, newValue);
+            title.textContent = project.title;
+            renderProjects();
+        }
+    );
 
     deleteProjectButton.dataset.uuid = project.uuid;
 }
@@ -103,8 +114,30 @@ function renderTodoDetails(todo) {
     div.appendChild(priorityButton);
 }
 
+function makeEditable(element, getValue, onSave) {
+    element.onclick = () => {
+        const input = document.createElement("input");
+        input.value = getValue();
+
+        element.replaceWith(input);
+        input.focus();
+
+        input.addEventListener("blur", () => {
+            onSave(input.value);
+            input.replaceWith(element);
+        });
+
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                input.blur();
+            }
+        });
+    };
+}
+
 export { 
     renderProjects,
     renderTodos,
-    renderTodoDetails
+    renderTodoDetails,
+    makeEditable
  };

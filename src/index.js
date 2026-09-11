@@ -33,7 +33,6 @@ renderProjects();
 
 const addProjectButton = document.getElementById("add-project");
 const deleteProjectButton = document.getElementById("delete-project");
-const nav = document.getElementById("projects");
 
 addProjectButton.addEventListener("click", () => {
     createProject();
@@ -48,4 +47,3 @@ deleteProjectButton.addEventListener("click", (e) => {
 });
 
 //testing area
-console.log(projects);
