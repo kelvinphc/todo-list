@@ -1,16 +1,31 @@
 *, *::before, *::after {
     box-sizing: border-box;
+    border: 1px solid black;
 }
 
 body {
     display: grid;
-    grid-template-columns: 384px 1fr 384px;
+    grid-template-columns: 256px 1fr 256px;
 }
 
 #projects, #pending, #completed, #todo-details {
-    list-style-type: none;
     display: grid;
     grid-auto-rows: 48px;
     align-items: center;
     padding-left: 0;
+}
+
+#project-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+nav {
+    display: grid;
+    grid-template-rows: 1fr 48px;
+    align-items: center;
+}
+
+button {
+    height: 19.5px;
 }

@@ -31,4 +31,13 @@ onChange(() => saveProjects());
 loadProjects();
 renderProjects();
 
+const addProjectButton = document.getElementById("add-project");
+const nav = document.getElementById("projects");
+
+addProjectButton.addEventListener("click", () => {
+    createProject();
+    nav.innerHTML = "";
+    renderProjects();
+});
+
 //testing area

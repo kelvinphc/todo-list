@@ -2,10 +2,10 @@ import { notifyChange } from "./events.js";
 
 let projects = [];
 
-function createProject(title) {
+function createProject() {
     const project = {
         uuid: crypto.randomUUID(),
-        title,
+        title: "Untitled Project",
         pendingTodos: [],
         completedTodos: []
     };

@@ -18,20 +18,19 @@ import {
 } from "./todos.js";
 
 function renderProjects() {
-    const nav = document.getElementById("projects");
-    const div = document.getElementById("todo-details");
+    const projectsDiv = document.getElementById("projects");
+    const detailsDiv = document.getElementById("todo-details");
 
     for (let project of projects) {
         const button = document.createElement("button");
         button.textContent = project.title;
 
         button.addEventListener("click", () => {
-            div.innerHTML = "";
-            
+            detailsDiv.innerHTML = "";
             renderTodos(project);
         });
 
-        nav.appendChild(button);
+        projectsDiv.appendChild(button);
     }
 }
 
