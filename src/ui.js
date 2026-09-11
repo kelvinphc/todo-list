@@ -20,6 +20,8 @@ import {
 function renderProjects() {
     const projectsDiv = document.getElementById("projects");
     const detailsDiv = document.getElementById("todo-details");
+    
+    projectsDiv.innerHTML = "";
 
     for (let project of projects) {
         const button = document.createElement("button");
@@ -41,6 +43,7 @@ function renderTodos(project) {
     const completedDiv = document.getElementById("completed");
     const completedTodos = project.completedTodos;
     const detailsDiv = document.getElementById("todo-details");
+    const deleteProjectButton = document.getElementById("delete-project");
 
     pendingDiv.innerHTML = "";
     completedDiv.innerHTML = "";
@@ -72,6 +75,8 @@ function renderTodos(project) {
     }
 
     title.textContent = project.title;
+
+    deleteProjectButton.dataset.uuid = project.uuid;
 }
 
 function renderTodoDetails(todo) {

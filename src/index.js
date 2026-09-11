@@ -32,12 +32,20 @@ loadProjects();
 renderProjects();
 
 const addProjectButton = document.getElementById("add-project");
+const deleteProjectButton = document.getElementById("delete-project");
 const nav = document.getElementById("projects");
 
 addProjectButton.addEventListener("click", () => {
     createProject();
-    nav.innerHTML = "";
+    renderProjects();
+});
+
+deleteProjectButton.addEventListener("click", (e) => {
+    const uuid = e.target.dataset.uuid;
+    if (!uuid) return;
+    deleteProject(uuid);
     renderProjects();
 });
 
 //testing area
+console.log(projects);
