@@ -4,7 +4,8 @@ import {
     deleteProject, 
     changeProjectTitle,
     saveProjects,
-    loadProjects
+    loadProjects,
+    getPreviousProject
 } from "./projects.js";
 import { 
     createTodo, 
@@ -46,7 +47,8 @@ function renderTodos(project) {
     const completedDiv = document.getElementById("completed");
     const completedTodos = project.completedTodos;
     const detailsDiv = document.getElementById("todo-details");
-    const deleteProjectButton = document.getElementById("delete-project");
+    const titleDiv = document.getElementById("project-title");
+    const deleteProjectButton = document.createElement("button");
 
     pendingDiv.innerHTML = "";
     completedDiv.innerHTML = "";
@@ -75,8 +77,6 @@ function renderTodos(project) {
         completedDiv.appendChild(button);
     }
 
-    title.textContent = project.title;
-
     makeEditable(
         title,
         () => project.title,
@@ -87,7 +87,18 @@ function renderTodos(project) {
         }
     );
 
-    deleteProjectButton.dataset.uuid = project.uuid;
+    deleteProjectButton.textContent = "Delete Project";
+    title.textContent = project.title;
+    titleDiv.innerHTML = "";
+    titleDiv.appendChild(title);
+    if (project !== projects[0]) titleDiv.appendChild(deleteProjectButton);
+
+    deleteProjectButton.addEventListener("click", () => {
+        const previousProject = getPreviousProject(project.uuid);
+        deleteProject(project.uuid);
+        renderProjects();
+        if (previousProject) renderTodos(previousProject);
+    });
 }
 
 function renderTodoDetails(todo) {

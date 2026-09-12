@@ -5,7 +5,8 @@ import {
     deleteProject, 
     changeProjectTitle,
     saveProjects,
-    loadProjects
+    loadProjects,
+    getPreviousProject
 } from "./projects.js";
 import { 
     createTodo, 
@@ -32,18 +33,22 @@ loadProjects();
 renderProjects();
 
 const addProjectButton = document.getElementById("add-project");
-const deleteProjectButton = document.getElementById("delete-project");
+// const deleteProjectButton = document.getElementById("delete-project");
 
 addProjectButton.addEventListener("click", () => {
     createProject();
     renderProjects();
 });
 
+
+/*
 deleteProjectButton.addEventListener("click", (e) => {
     const uuid = e.target.dataset.uuid;
+    const index = projects.findIndex((project) => project.uuid === uuid) - 1;
+    
     if (!uuid) return;
     deleteProject(uuid);
     renderProjects();
+    renderTodos(projects[index]);
 });
-
-//testing area
+*/
