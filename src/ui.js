@@ -77,16 +77,6 @@ function renderTodos(project) {
         completedDiv.appendChild(button);
     }
 
-    makeEditable(
-        title,
-        () => project.title,
-        (newValue) => {
-            changeProjectTitle(project, newValue);
-            title.textContent = project.title;
-            renderProjects();
-        }
-    );
-
     deleteProjectButton.textContent = "Delete Project";
     title.textContent = project.title;
     titleDiv.innerHTML = "";
@@ -99,6 +89,21 @@ function renderTodos(project) {
         renderProjects();
         if (previousProject) renderTodos(previousProject);
     });
+
+    if (project === projects[0]) {
+        title.onclick = null;
+        return;
+    }
+
+    makeEditable(
+        title,
+        () => project.title,
+        (newValue) => {
+            changeProjectTitle(project, newValue);
+            title.textContent = project.title;
+            renderProjects();
+        }
+    );
 }
 
 function renderTodoDetails(todo) {

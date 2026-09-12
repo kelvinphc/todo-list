@@ -17,7 +17,7 @@ function createProject() {
 function deleteProject(uuid) {
     const index = projects.findIndex((project) => project.uuid === uuid);
 
-    if (index !== 0) return;
+    if (index === 0) return;
     projects.splice(index, 1);
     notifyChange();
 }
