@@ -1,4 +1,5 @@
 import { notifyChange } from "./events.js";
+import { completeTodo } from "./todos.js";
 
 let projects = [];
 
@@ -23,6 +24,7 @@ function deleteProject(uuid) {
 }
 
 function changeProjectTitle(project, newTitle) {
+    if (project === projects[0]) return;
     if (newTitle.trim() !== "") {
         project.title = newTitle;
         notifyChange();
@@ -34,7 +36,14 @@ function saveProjects() {
 }
 
 function loadProjects() {
-    projects = JSON.parse(localStorage.getItem("projects")) || [];
+    const defaultProject = {
+        uuid: "a1b2c3d4-0000-4000-8000-000000000000",
+        title: "Tasks",
+        pendingTodos: [],
+        completedTodos: []
+    };
+
+    projects = JSON.parse(localStorage.getItem("projects")) || [defaultProject];
 }
 
 function getPreviousProject(uuid) {
