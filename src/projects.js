@@ -6,7 +6,7 @@ let projects = [];
 function createProject() {
     const project = {
         uuid: crypto.randomUUID(),
-        title: "Untitled Project",
+        title: generateUniqueTitle(),
         pendingTodos: [],
         completedTodos: []
     };
@@ -49,6 +49,19 @@ function loadProjects() {
 function getPreviousProject(uuid) {
     const index = projects.findIndex((project) => project.uuid === uuid);
     return projects[index - 1];
+}
+
+function generateUniqueTitle() {
+    const baseTitle = "Untitled Project";
+    let title = baseTitle;
+    let counter = 1;
+
+    while (projects.some((project) => project.title === title)) {
+        title = `${baseTitle} ${counter}`;
+        counter++;
+    }
+
+    return title;
 }
 
 export { 
