@@ -2,13 +2,13 @@ import { projects } from "./projects.js";
 import { notifyChange } from "./events.js";
 import { compareAsc, format } from "date-fns";
 
-function createTodo(projectUuid, title, description, dueDate, priority) {
+function createTodo(projectUuid, title) {
     const todo = {
         uuid: crypto.randomUUID(),
         title,
-        description,
-        dueDate,
-        priority
+        description: "",
+        dueDate: "",
+        priority: ""
     };
 
     const targetProject = projects.find((project) => project.uuid === projectUuid);

@@ -1,12 +1,15 @@
 import "./styles.css";
 import { 
     projects, 
+    currentProject,
     createProject, 
     deleteProject, 
     changeProjectTitle,
     saveProjects,
     loadProjects,
-    getPreviousProject
+    getPreviousProject,
+    setCurrentProject,
+    getCurrentProject
 } from "./projects.js";
 import { 
     createTodo, 
@@ -21,7 +24,8 @@ import {
 import { 
     renderProjects,
     renderTodos,
-    renderTodoDetails
+    renderTodoDetails,
+    makeEditable
 } from "./ui.js";
 import { 
     onChange 
@@ -33,22 +37,28 @@ loadProjects();
 renderProjects();
 
 const addProjectButton = document.getElementById("add-project");
-// const deleteProjectButton = document.getElementById("delete-project");
+const addTodoButton = document.getElementById("add-todo-button");
+const addTodoInput = document.getElementById("add-todo-input");
 
 addProjectButton.addEventListener("click", () => {
     createProject();
     renderProjects();
 });
 
+function handleAddTodo() {
+    const project = getCurrentProject();
+    if (!project) return;
+    if (addTodoInput.value.trim() === "") return;
 
-/*
-deleteProjectButton.addEventListener("click", (e) => {
-    const uuid = e.target.dataset.uuid;
-    const index = projects.findIndex((project) => project.uuid === uuid) - 1;
-    
-    if (!uuid) return;
-    deleteProject(uuid);
-    renderProjects();
-    renderTodos(projects[index]);
+    createTodo(project.uuid, addTodoInput.value);
+    addTodoInput.value = "";
+    renderTodos(project);
+}
+
+addTodoInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        handleAddTodo();
+    }
 });
-*/
+
+addTodoButton.addEventListener("click", handleAddTodo);

@@ -1,35 +1,45 @@
 *, *::before, *::after {
     box-sizing: border-box;
+}
 
+:root {
+    --spacing-1: 16px;
+    --spacing-2: 24px;
+    --spacing-3: 32px;
+    --spacing-4: 48px;
+    --spacing-5: 64px;
+    --projects-and-todo-details-width: 256px;
 }
 
 body {
-    display: grid;
-    grid-template-columns: 256px 1fr 256px;
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    margin: 0;
 }
 
 #projects, #pending, #completed, #todo-details {
     display: grid;
-    grid-auto-rows: 48px;
+    grid-auto-rows: var(--spacing-4);
     align-items: center;
 }
 
 #project-title {
     display: flex;
     justify-content: space-between;
-    padding: 16px;
     align-items: center;
+    margin-bottom: var(--spacing-4);
 }
 
 nav {
     display: grid;
-    grid-template-rows: 1fr 48px;
-    align-items: center;
-    padding: 16px;
+    grid-template-rows: 1fr var(--spacing-4);
+    padding: var(--spacing-4);
+    width: var(--projects-and-todo-details-width);
 }
 
 button {
-    height: 19.5px;
+    height: var(--spacing-4);
     text-align: left;
 }
 
@@ -38,5 +48,25 @@ h1 {
 }
 
 h2 {
-    margin: 16px;
+    margin-bottom: var(--spacing-4);
+}
+
+#add-todo-input {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+#todos {
+    padding: var(--spacing-4);
+    flex-grow: 1;
+    min-width: 0;
+}
+
+#add-todo {
+    display: flex;
+}
+
+#todo-details {
+    width: var(--projects-and-todo-details-width);
+    padding: var(--spacing-4);
 }

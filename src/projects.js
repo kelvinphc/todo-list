@@ -2,6 +2,7 @@ import { notifyChange } from "./events.js";
 import { completeTodo } from "./todos.js";
 
 let projects = [];
+let currentProject = null;
 
 function createProject() {
     const project = {
@@ -64,12 +65,23 @@ function generateUniqueTitle() {
     return title;
 }
 
+function setCurrentProject(project) {
+    currentProject = project;
+}
+
+function getCurrentProject() {
+    return currentProject;
+}
+
 export { 
     projects, 
+    currentProject,
     createProject, 
     deleteProject, 
     changeProjectTitle,
     saveProjects,
     loadProjects,
-    getPreviousProject
+    getPreviousProject,
+    setCurrentProject,
+    getCurrentProject
 };

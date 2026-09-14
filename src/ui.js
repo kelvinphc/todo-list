@@ -5,7 +5,8 @@ import {
     changeProjectTitle,
     saveProjects,
     loadProjects,
-    getPreviousProject
+    getPreviousProject,
+    setCurrentProject
 } from "./projects.js";
 import { 
     createTodo, 
@@ -49,6 +50,8 @@ function renderTodos(project) {
     const detailsDiv = document.getElementById("todo-details");
     const titleDiv = document.getElementById("project-title");
     const deleteProjectButton = document.createElement("button");
+
+    setCurrentProject(project);
 
     pendingDiv.innerHTML = "";
     completedDiv.innerHTML = "";
