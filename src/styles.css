@@ -1,5 +1,6 @@
 *, *::before, *::after {
     box-sizing: border-box;
+    border: 1px solid black;
 }
 
 :root {
@@ -34,7 +35,7 @@ body {
 nav {
     display: grid;
     grid-template-rows: 1fr var(--spacing-4);
-    padding: var(--spacing-4);
+    padding: var(--spacing-1);
     width: var(--projects-and-todo-details-width);
 }
 
@@ -57,7 +58,7 @@ h2 {
 }
 
 #todos {
-    padding: var(--spacing-4);
+    padding: var(--spacing-1);
     flex-grow: 1;
     min-width: 0;
 }
@@ -68,5 +69,5 @@ h2 {
 
 #todo-details {
     width: var(--projects-and-todo-details-width);
-    padding: var(--spacing-4);
+    padding: var(--spacing-1);
 }

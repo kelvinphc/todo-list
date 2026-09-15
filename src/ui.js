@@ -6,7 +6,8 @@ import {
     saveProjects,
     loadProjects,
     getPreviousProject,
-    setCurrentProject
+    setCurrentProject,
+    getCurrentProject
 } from "./projects.js";
 import { 
     createTodo, 
@@ -16,7 +17,8 @@ import {
     changeTodoTitle, 
     changeTodoDescription, 
     changeTodoDueDate,
-    changeTodoPriority
+    changeTodoPriority,
+    getAdjacentTodo
 } from "./todos.js";
 import { 
     notifyChange
@@ -114,7 +116,12 @@ function renderTodoDetails(todo) {
     const description = todo.description;
     const dueDate = todo.dueDate;
     const priority = todo.priority;
+    const completed = todo.completed;
     const div = document.getElementById("todo-details");
+    const project = getCurrentProject();
+    let adjacentTodo;
+
+    div.innerHTML = "";
 
     const titleButton = document.createElement("button");
     titleButton.textContent = title;
@@ -131,6 +138,25 @@ function renderTodoDetails(todo) {
     const priorityButton = document.createElement("button");
     priorityButton.textContent = priority;
     div.appendChild(priorityButton);
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete Todo";
+    deleteButton.addEventListener("click", () => {
+        if (completed === false) {
+            adjacentTodo = getAdjacentTodo(project.pendingTodos, todo.uuid);
+        } else {
+            adjacentTodo = getAdjacentTodo(project.completedTodos, todo.uuid);
+        }
+
+        deleteTodo(project.uuid, todo.uuid);
+        renderTodos(project);
+        if (adjacentTodo !== undefined) {
+            renderTodoDetails(adjacentTodo);
+        } else {
+            div.innerHTML = "";
+        }
+    });
+    div.appendChild(deleteButton);
 }
 
 function makeEditable(element, getValue, onSave) {

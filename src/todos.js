@@ -8,7 +8,8 @@ function createTodo(projectUuid, title) {
         title,
         description: "",
         dueDate: "",
-        priority: ""
+        priority: "",
+        completed: false
     };
 
     const targetProject = projects.find((project) => project.uuid === projectUuid);
@@ -18,15 +19,26 @@ function createTodo(projectUuid, title) {
 
 function deleteTodo(projectUuid, uuid) {
     const targetProject = projects.find((project) => project.uuid === projectUuid);
-    const index = targetProject.pendingTodos.findIndex((todo) => todo.uuid === uuid);
-    targetProject.pendingTodos.splice(index, 1);
-    notifyChange();
+
+    let index = targetProject.pendingTodos.findIndex((todo) => todo.uuid === uuid);
+    if (index !== -1) {
+        targetProject.pendingTodos.splice(index, 1);
+        notifyChange();
+        return
+    }
+
+    index = targetProject.completedTodos.findIndex((todo) => todo.uuid === uuid);
+    if (index !== -1) {
+        targetProject.completeTodos.splice(index, 1);
+        notifyChange();
+    }
 }
 
 function completeTodo(projectUuid, uuid) {
     const targetProject = projects.find((project) => project.uuid === projectUuid);
     const index = targetProject.pendingTodos.findIndex((todo) => todo.uuid === uuid);
     const [todo] = targetProject.pendingTodos.splice(index, 1);
+    todo.completed = true;
     targetProject.completedTodos.unshift(todo);
     notifyChange();
 }
@@ -35,6 +47,7 @@ function uncompleteTodo(projectUuid, uuid) {
     const targetProject = projects.find((project) => project.uuid === projectUuid);
     const index = targetProject.completedTodos.findIndex((todo) => todo.uuid === uuid);
     const [todo] = targetProject.completedTodos.splice(index, 1);
+    todo.completed = false;
     targetProject.pendingTodos.unshift(todo);
     notifyChange();
 }
@@ -69,6 +82,12 @@ function changeTodoPriority(todo) {
     notifyChange();
 }
 
+function getAdjacentTodo(list, uuid) {
+    const index = list.findIndex((todo) => todo.uuid === uuid);
+    if (list.length === index + 1) return list[index - 1];
+    return list[index + 1];
+}
+
 export { 
     createTodo, 
     deleteTodo, 
@@ -77,5 +96,6 @@ export {
     changeTodoTitle, 
     changeTodoDescription, 
     changeTodoDueDate,
-    changeTodoPriority
+    changeTodoPriority,
+    getAdjacentTodo
 };
