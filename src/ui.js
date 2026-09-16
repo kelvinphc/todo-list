@@ -25,12 +25,13 @@ import {
 } from "./events.js";
 
 function renderProjects() {
-    const projectsDiv = document.getElementById("projects");
+    const projectsUl = document.getElementById("projects");
     const detailsDiv = document.getElementById("todo-details");
 
-    projectsDiv.innerHTML = "";
+    projectsUl.innerHTML = "";
 
     for (let project of projects) {
+        const li = document.createElement("li");
         const button = document.createElement("button");
         button.textContent = project.title;
 
@@ -39,7 +40,8 @@ function renderProjects() {
             renderTodos(project);
         });
 
-        projectsDiv.appendChild(button);
+        li.appendChild(button);
+        projectsUl.appendChild(li);
     }
 }
 

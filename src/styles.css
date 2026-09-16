@@ -1,6 +1,6 @@
 *, *::before, *::after {
     box-sizing: border-box;
-    border: 1px solid black;
+
 }
 
 :root {
@@ -32,11 +32,13 @@ body {
     margin-bottom: var(--spacing-4);
 }
 
-nav {
+nav ul {
+    list-style-type: none;
     display: grid;
     grid-template-rows: 1fr var(--spacing-4);
     padding: var(--spacing-1);
     width: var(--projects-and-todo-details-width);
+    margin: 0;
 }
 
 button {
@@ -70,4 +72,13 @@ h2 {
 #todo-details {
     width: var(--projects-and-todo-details-width);
     padding: var(--spacing-1);
+}
+
+li button {
+    width: 100%;
+}
+
+#add-project {
+    margin: var(--spacing-1);
+    width: calc(var(--projects-and-todo-details-width) - 2 * var(--spacing-1));
 }
