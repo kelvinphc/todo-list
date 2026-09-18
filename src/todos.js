@@ -28,10 +28,8 @@ function deleteTodo(projectUuid, uuid) {
     }
 
     index = targetProject.completedTodos.findIndex((todo) => todo.uuid === uuid);
-    if (index !== -1) {
-        targetProject.completeTodos.splice(index, 1);
-        notifyChange();
-    }
+    targetProject.completedTodos.splice(index, 1);
+    notifyChange();
 }
 
 function completeTodo(projectUuid, uuid) {

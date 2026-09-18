@@ -1,6 +1,6 @@
 *, *::before, *::after {
     box-sizing: border-box;
-
+    border: 1px solid black;
 }
 
 :root {
@@ -51,7 +51,7 @@ h1 {
 }
 
 h2 {
-    margin-bottom: var(--spacing-4);
+    margin: var(--spacing-1) 0;
 }
 
 #add-todo-input {
@@ -67,6 +67,7 @@ h2 {
 
 #add-todo {
     display: flex;
+    margin-top: var(--spacing-1);
 }
 
 #todo-details {
@@ -74,11 +75,31 @@ h2 {
     padding: var(--spacing-1);
 }
 
-li button {
+#projects button {
     width: 100%;
 }
 
 #add-project {
     margin: var(--spacing-1);
     width: calc(var(--projects-and-todo-details-width) - 2 * var(--spacing-1));
+}
+
+#pending, #completed {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#pending li, #completed li {
+    display: flex;
+    gap: var(--spacing-1);
+    align-items: center;
+}
+
+span {
+    flex-grow: 1;
+}
+
+#completed li {
+    text-decoration: line-through;
 }

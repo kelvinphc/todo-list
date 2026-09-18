@@ -47,9 +47,9 @@ function renderProjects() {
 
 function renderTodos(project) {
     const title = document.querySelector("h1");
-    const pendingDiv = document.getElementById("pending");
+    const pendingUl = document.getElementById("pending");
     const pendingTodos = project.pendingTodos;
-    const completedDiv = document.getElementById("completed");
+    const completedUl = document.getElementById("completed");
     const completedTodos = project.completedTodos;
     const detailsDiv = document.getElementById("todo-details");
     const titleDiv = document.getElementById("project-title");
@@ -57,31 +57,68 @@ function renderTodos(project) {
 
     setCurrentProject(project);
 
-    pendingDiv.innerHTML = "";
-    completedDiv.innerHTML = "";
+    pendingUl.innerHTML = "";
+    completedUl.innerHTML = "";
 
     for (let pendingTodo of pendingTodos) {
+        const li = document.createElement("li");
+        const checkbox = document.createElement("input");
+        const span = document.createElement("span");
+        const time = document.createElement("time");
         const button = document.createElement("button");
-        button.textContent = pendingTodo.title;
 
-        button.addEventListener("click", () => {
+        checkbox.type = "checkbox";
+        span.textContent = pendingTodo.title;
+        time.datetime = pendingTodo.dueDate;
+        time.textContent = pendingTodo.dueDate;
+        button.textContent = pendingTodo.priority;
+
+        li.addEventListener("click", () => {
             detailsDiv.innerHTML = "";
             renderTodoDetails(pendingTodo);
         });
 
-        pendingDiv.appendChild(button);
+        checkbox.addEventListener("change", () => {
+            completeTodo(project.uuid, pendingTodo.uuid);
+            renderTodos(project);
+        });
+
+        li.appendChild(checkbox);
+        li.appendChild(span);
+        li.appendChild(time);
+        li.appendChild(button);
+        pendingUl.appendChild(li);
     }
 
     for (let completedTodo of completedTodos) {
+        const li = document.createElement("li");
+        const checkbox = document.createElement("input");
+        const span = document.createElement("span");
+        const time = document.createElement("time");
         const button = document.createElement("button");
-        button.textContent = completedTodo.title;
 
-        button.addEventListener("click", () => {
+        checkbox.type = "checkbox";
+        checkbox.checked = true;
+        span.textContent = completedTodo.title;
+        time.datetime = completedTodo.dueDate;
+        time.textContent = completedTodo.dueDate;
+        button.textContent = completedTodo.priority;
+
+        li.addEventListener("click", () => {
             detailsDiv.innerHTML = "";
             renderTodoDetails(completedTodo);
         });
 
-        completedDiv.appendChild(button);
+        checkbox.addEventListener("change", () => {
+            uncompleteTodo(project.uuid, completedTodo.uuid);
+            renderTodos(project);
+        });
+
+        li.appendChild(checkbox);
+        li.appendChild(span);
+        li.appendChild(time);
+        li.appendChild(button);
+        completedUl.appendChild(li);
     }
 
     deleteProjectButton.textContent = "Delete Project";
