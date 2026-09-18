@@ -1,6 +1,6 @@
 *, *::before, *::after {
     box-sizing: border-box;
-    border: 1px solid black;
+    
 }
 
 :root {
@@ -96,10 +96,14 @@ h2 {
     align-items: center;
 }
 
-span {
-    flex-grow: 1;
-}
-
 #completed li {
     text-decoration: line-through;
+}
+
+#pending button, #completed button {
+    height: var(--spacing-2);
+}
+
+time {
+    margin-left: auto;
 }

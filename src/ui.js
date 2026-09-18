@@ -1,28 +1,17 @@
 import { 
     projects, 
-    createProject, 
     deleteProject, 
     changeProjectTitle,
-    saveProjects,
-    loadProjects,
     getPreviousProject,
     setCurrentProject,
     getCurrentProject
 } from "./projects.js";
 import { 
-    createTodo, 
     deleteTodo, 
     completeTodo, 
     uncompleteTodo, 
-    changeTodoTitle, 
-    changeTodoDescription, 
-    changeTodoDueDate,
-    changeTodoPriority,
     getAdjacentTodo
 } from "./todos.js";
-import { 
-    notifyChange
-} from "./events.js";
 
 function renderProjects() {
     const projectsUl = document.getElementById("projects");
@@ -83,6 +72,17 @@ function renderTodos(project) {
             renderTodos(project);
         });
 
+        makeEditable(
+            span,
+            () => pendingTodo.title,
+            (newValue) => {
+                changeProjectTitle(pendingTodo, newValue);
+                span.textContent = pendingTodo.title;
+                renderTodos(project);
+                renderTodoDetails(pendingTodo);
+            }
+        );
+
         li.appendChild(checkbox);
         li.appendChild(span);
         li.appendChild(time);
@@ -113,6 +113,17 @@ function renderTodos(project) {
             uncompleteTodo(project.uuid, completedTodo.uuid);
             renderTodos(project);
         });
+
+        makeEditable(
+            span,
+            () => completedTodo.title,
+            (newValue) => {
+                changeProjectTitle(completedTodo, newValue);
+                span.textContent = completedTodo.title;
+                renderTodos(project);
+                renderTodoDetails(completedTodo);
+            }
+        );
 
         li.appendChild(checkbox);
         li.appendChild(span);

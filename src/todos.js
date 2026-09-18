@@ -50,14 +50,11 @@ function uncompleteTodo(projectUuid, uuid) {
     notifyChange();
 }
 
-function changeTodoTitle(todo) {
-    const newTitle = prompt("Please enter new title");
-
-    if (newTitle !== null) {
+function changeTodoTitle(todo, newTitle) {
+    if (newTitle.trim() !== "") {
         todo.title = newTitle;
+        notifyChange();
     }
-
-    notifyChange();
 }
 
 function changeTodoDescription(todo) {
