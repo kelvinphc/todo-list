@@ -7,10 +7,11 @@ import {
     getCurrentProject
 } from "./projects.js";
 import { 
-    deleteTodo, 
-    completeTodo, 
+    deleteTodo,
+    completeTodo,
     uncompleteTodo,
-    changeTodoTitle, 
+    changeTodoTitle,
+    changeTodoPriority,
     getAdjacentTodo
 } from "./todos.js";
 
@@ -85,6 +86,12 @@ function renderTodos(project) {
             }
         );
 
+        button.addEventListener("click", () => {
+            changeTodoPriority(pendingTodo);
+            renderTodos(project);
+            renderTodoDetails(pendingTodo);
+        });
+
         li.appendChild(checkbox);
         li.appendChild(span);
         li.appendChild(time);
@@ -127,6 +134,12 @@ function renderTodos(project) {
                 renderTodoDetails(completedTodo);
             }
         );
+
+        button.addEventListener("click", () => {
+            changeTodoPriority(completedTodo);
+            renderTodos(project);
+            renderTodoDetails(completedTodo);
+        });
 
         li.appendChild(checkbox);
         li.appendChild(span);
@@ -188,13 +201,13 @@ function renderTodoDetails(todo) {
     titleCheckbox.addEventListener("change", () => {
         if (completed === false) {
             completeTodo(project.uuid, todo.uuid);
-            renderTodos(project);
-            renderTodoDetails(todo);
+
         } else {
             uncompleteTodo(project.uuid, todo.uuid);
-            renderTodos(project);
-            renderTodoDetails(todo);
         }
+
+        renderTodos(project);
+        renderTodoDetails(todo);
     });
 
     makeEditable(
@@ -215,6 +228,13 @@ function renderTodoDetails(todo) {
     const priorityButton = document.createElement("button");
     prioritySpan.textContent = "Priority: ";
     priorityButton.textContent = priority;
+
+    priorityButton.addEventListener("click", () => {
+        changeTodoPriority(todo);
+        renderTodos(project);
+        renderTodoDetails(todo);
+    });
+
     priorityDiv.appendChild(prioritySpan);
     priorityDiv.appendChild(priorityButton);
     div.appendChild(priorityDiv);

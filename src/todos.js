@@ -73,7 +73,7 @@ function changeTodoDueDate(todo, newDueDate) {
 }
 
 function changeTodoPriority(todo) {
-    todo.priorty = todo.priority === "High" ? "Low" : "High";
+    todo.priority = todo.priority === "High" ? "Low" : "High";
     notifyChange();
 }
 
