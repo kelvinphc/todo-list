@@ -9,7 +9,8 @@ import {
 import { 
     deleteTodo, 
     completeTodo, 
-    uncompleteTodo, 
+    uncompleteTodo,
+    changeTodoTitle, 
     getAdjacentTodo
 } from "./todos.js";
 
@@ -70,13 +71,14 @@ function renderTodos(project) {
         checkbox.addEventListener("change", () => {
             completeTodo(project.uuid, pendingTodo.uuid);
             renderTodos(project);
+            renderTodoDetails(pendingTodo);
         });
 
         makeEditable(
             span,
             () => pendingTodo.title,
             (newValue) => {
-                changeProjectTitle(pendingTodo, newValue);
+                changeTodoTitle(pendingTodo, newValue);
                 span.textContent = pendingTodo.title;
                 renderTodos(project);
                 renderTodoDetails(pendingTodo);
@@ -112,13 +114,14 @@ function renderTodos(project) {
         checkbox.addEventListener("change", () => {
             uncompleteTodo(project.uuid, completedTodo.uuid);
             renderTodos(project);
+            renderTodoDetails(completedTodo);
         });
 
         makeEditable(
             span,
             () => completedTodo.title,
             (newValue) => {
-                changeProjectTitle(completedTodo, newValue);
+                changeTodoTitle(completedTodo, newValue);
                 span.textContent = completedTodo.title;
                 renderTodos(project);
                 renderTodoDetails(completedTodo);
@@ -173,23 +176,64 @@ function renderTodoDetails(todo) {
 
     div.innerHTML = "";
 
-    const titleButton = document.createElement("button");
-    titleButton.textContent = title;
-    div.appendChild(titleButton);
+    const titleDiv = document.createElement("div");
+    const titleCheckbox = document.createElement("input");
+    const titleSpan = document.createElement("span");
+    titleCheckbox.type = "checkbox";
+    if (completed === true) titleCheckbox.checked = true;
+    titleSpan.textContent = title;
+    titleDiv.appendChild(titleCheckbox);
+    titleDiv.appendChild(titleSpan);
 
-    const descriptionButton = document.createElement("button");
-    descriptionButton.textContent = description;
-    div.appendChild(descriptionButton);
+    titleCheckbox.addEventListener("change", () => {
+        if (completed === false) {
+            completeTodo(project.uuid, todo.uuid);
+            renderTodos(project);
+            renderTodoDetails(todo);
+        } else {
+            uncompleteTodo(project.uuid, todo.uuid);
+            renderTodos(project);
+            renderTodoDetails(todo);
+        }
+    });
 
-    const dueDateButton = document.createElement("button");
-    dueDateButton.textContent = dueDate;
-    div.appendChild(dueDateButton);
+    makeEditable(
+        titleSpan,
+        () => todo.title,
+        (newValue) => {
+            changeTodoTitle(todo, newValue);
+            titleSpan.textContent = todo.title;
+            renderTodos(project);
+            renderTodoDetails(todo);
+        }
+    );
 
+    div.appendChild(titleDiv);
+
+    const priorityDiv = document.createElement("div");
+    const prioritySpan = document.createElement("span");
     const priorityButton = document.createElement("button");
+    prioritySpan.textContent = "Priority: ";
     priorityButton.textContent = priority;
-    div.appendChild(priorityButton);
+    priorityDiv.appendChild(prioritySpan);
+    priorityDiv.appendChild(priorityButton);
+    div.appendChild(priorityDiv);
+
+    const dueDateDiv = document.createElement("div");
+    const dueDateSpan = document.createElement("span");
+    const dueDateInput = document.createElement("input");
+    dueDateSpan.textContent = "Due date: ";
+    dueDateInput.type = "date";
+    dueDateDiv.appendChild(dueDateSpan);
+    dueDateDiv.appendChild(dueDateInput);
+    div.appendChild(dueDateDiv);
+
+    const descriptionTextarea = document.createElement("textarea");
+    descriptionTextarea.placeholder = "Add description";
+    div.appendChild(descriptionTextarea);
 
     const deleteButton = document.createElement("button");
+    deleteButton.id = "delete-todo";
     deleteButton.textContent = "Delete Todo";
     deleteButton.addEventListener("click", () => {
         if (completed === false) {

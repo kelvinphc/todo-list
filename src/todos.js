@@ -8,7 +8,7 @@ function createTodo(projectUuid, title) {
         title,
         description: "",
         dueDate: "",
-        priority: "",
+        priority: "Low",
         completed: false
     };
 

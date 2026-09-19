@@ -19,7 +19,7 @@ body {
     margin: 0;
 }
 
-#projects, #pending, #completed, #todo-details {
+#projects, #pending, #completed {
     display: grid;
     grid-auto-rows: var(--spacing-4);
     align-items: center;
@@ -41,7 +41,7 @@ nav ul {
     margin: 0;
 }
 
-button {
+button, #todo-details #delete-todo {
     height: var(--spacing-4);
     text-align: left;
 }
@@ -71,6 +71,9 @@ h2 {
 }
 
 #todo-details {
+    display: grid;
+    grid-template-rows: repeat(4, var(--spacing-4)) 1fr;
+    align-items: center;
     width: var(--projects-and-todo-details-width);
     padding: var(--spacing-1);
 }
@@ -90,20 +93,34 @@ h2 {
     padding: 0;
 }
 
-#pending li, #completed li {
+#pending li, #completed li, #todo-details div {
     display: flex;
     gap: var(--spacing-1);
     align-items: center;
 }
 
-#completed li {
+#completed {
     text-decoration: line-through;
 }
 
-#pending button, #completed button {
+#pending button, #completed button, #todo-details button {
     height: var(--spacing-2);
 }
 
 time {
     margin-left: auto;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+html, body {
+    height: 100%;
+}
+
+#delete-todo {
+    align-self: end;
 }
