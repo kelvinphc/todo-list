@@ -11,9 +11,11 @@ import {
     completeTodo,
     uncompleteTodo,
     changeTodoTitle,
+    changeTodoDueDate,
     changeTodoPriority,
     getAdjacentTodo
 } from "./todos.js";
+import { format } from "date-fns";
 
 function renderProjects() {
     const projectsUl = document.getElementById("projects");
@@ -61,7 +63,7 @@ function renderTodos(project) {
         checkbox.type = "checkbox";
         span.textContent = pendingTodo.title;
         time.datetime = pendingTodo.dueDate;
-        time.textContent = pendingTodo.dueDate;
+        if (pendingTodo.dueDate !== "") time.textContent = format(pendingTodo.dueDate, "EEE',' d MMM yyyy");
         button.textContent = pendingTodo.priority;
 
         li.addEventListener("click", () => {
@@ -110,7 +112,7 @@ function renderTodos(project) {
         checkbox.checked = true;
         span.textContent = completedTodo.title;
         time.datetime = completedTodo.dueDate;
-        time.textContent = completedTodo.dueDate;
+        if (completedTodo.dueDate !== "") time.textContent = format(completedTodo.dueDate, "EEE',' d MMM yyyy");
         button.textContent = completedTodo.priority;
 
         li.addEventListener("click", () => {
@@ -244,6 +246,14 @@ function renderTodoDetails(todo) {
     const dueDateInput = document.createElement("input");
     dueDateSpan.textContent = "Due date: ";
     dueDateInput.type = "date";
+    dueDateInput.value = dueDate;
+
+    dueDateInput.addEventListener("change", () => {
+        changeTodoDueDate(todo, dueDateInput.value);
+        renderTodos(project);
+        renderTodoDetails(todo);
+    });
+
     dueDateDiv.appendChild(dueDateSpan);
     dueDateDiv.appendChild(dueDateInput);
     div.appendChild(dueDateDiv);

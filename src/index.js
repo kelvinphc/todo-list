@@ -1,31 +1,16 @@
 import "./styles.css";
 import { 
-    projects, 
-    currentProject,
     createProject, 
-    deleteProject, 
-    changeProjectTitle,
     saveProjects,
     loadProjects,
-    getPreviousProject,
-    setCurrentProject,
     getCurrentProject
 } from "./projects.js";
 import { 
-    createTodo, 
-    deleteTodo, 
-    completeTodo, 
-    uncompleteTodo, 
-    changeTodoTitle, 
-    changeTodoDescription, 
-    changeTodoDueDate,
-    changeTodoPriority
+    createTodo,
 } from "./todos.js";
 import { 
     renderProjects,
     renderTodos,
-    renderTodoDetails,
-    makeEditable
 } from "./ui.js";
 import { 
     onChange 

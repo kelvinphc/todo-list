@@ -1,5 +1,4 @@
 import { notifyChange } from "./events.js";
-import { completeTodo } from "./todos.js";
 
 let projects = [];
 let currentProject = null;

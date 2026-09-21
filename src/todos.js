@@ -1,6 +1,5 @@
 import { projects } from "./projects.js";
 import { notifyChange } from "./events.js";
-import { compareAsc, format } from "date-fns";
 
 function createTodo(projectUuid, title) {
     const todo = {
