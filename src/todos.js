@@ -56,13 +56,10 @@ function changeTodoTitle(todo, newTitle) {
     }
 }
 
-function changeTodoDescription(todo) {
-    const newDescription = prompt("Please enter new description");
-
+function changeTodoDescription(todo, newDescription) {
     if (newDescription !== null) {
         todo.description = newDescription;
     }
-
     notifyChange();
 }
 

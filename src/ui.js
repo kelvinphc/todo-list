@@ -13,7 +13,8 @@ import {
     changeTodoTitle,
     changeTodoDueDate,
     changeTodoPriority,
-    getAdjacentTodo
+    getAdjacentTodo,
+    changeTodoDescription
 } from "./todos.js";
 import { format } from "date-fns";
 
@@ -259,8 +260,21 @@ function renderTodoDetails(todo) {
     div.appendChild(dueDateDiv);
 
     const descriptionTextarea = document.createElement("textarea");
+    descriptionTextarea.rows = 5;
     descriptionTextarea.placeholder = "Add description";
+    descriptionTextarea.value = description;
+
+    descriptionTextarea.addEventListener("blur", () => {
+        changeTodoDescription(todo, descriptionTextarea.value);
+        renderTodoDetails(todo);
+    });
+
+    descriptionTextarea.addEventListener("input", () => {
+        autoResize(descriptionTextarea);
+    });
+
     div.appendChild(descriptionTextarea);
+    autoResize(descriptionTextarea);
 
     const deleteButton = document.createElement("button");
     deleteButton.id = "delete-todo";
@@ -302,6 +316,11 @@ function makeEditable(element, getValue, onSave) {
             }
         });
     };
+}
+
+function autoResize(textarea) {
+    textarea.style.height = "auto";
+    textarea.style.height = textarea.scrollHeight + "px";
 }
 
 export { 

@@ -124,3 +124,9 @@ html, body {
 #delete-todo {
     align-self: end;
 }
+
+textarea {
+    align-self: start;
+    resize: none;
+    overflow: hidden;
+}
