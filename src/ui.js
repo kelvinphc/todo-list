@@ -11,12 +11,95 @@ import {
     completeTodo,
     uncompleteTodo,
     changeTodoTitle,
+    changeTodoDescription,
     changeTodoDueDate,
     changeTodoPriority,
     getAdjacentTodo,
-    changeTodoDescription
+    getTodosDueToday
 } from "./todos.js";
 import { format } from "date-fns";
+
+let refreshMainView = () => {};
+let getAdjacentInView = () => undefined;
+
+function setMainView(renderFn, getAdjacentFn) {
+    refreshMainView = renderFn;
+    getAdjacentInView = getAdjacentFn;
+}
+
+function renderTodosDueToday() {
+    const todosDueToday = getTodosDueToday();
+    setMainView(
+        renderTodosDueToday,
+        (todo) => getAdjacentTodo(todosDueToday, todo.uuid, (item) => item.todo.uuid)
+    );
+    const title = document.querySelector("h1");
+    const completedH2 = document.querySelector("h2");
+    const pendingUl = document.getElementById("pending");
+    const completedUl = document.getElementById("completed");
+    const detailsDiv = document.getElementById("todo-details");
+    const titleDiv = document.getElementById("project-title");
+    const addTodoButton = document.getElementById("add-todo-button");
+    const addTodoInput = document.getElementById("add-todo-input");
+
+    addTodoButton.style.display = "none";
+    addTodoInput.style.display = "none";
+    pendingUl.innerHTML = "";
+    completedUl.innerHTML = "";
+
+    for (let todoDueToday of todosDueToday) {
+        const li = document.createElement("li");
+        const checkbox = document.createElement("input");
+        const titleSpan = document.createElement("span");
+        const projectSpan = document.createElement("span");
+        const button = document.createElement("button");
+
+        checkbox.type = "checkbox";
+        titleSpan.textContent = todoDueToday.todo.title;
+        projectSpan.textContent = todoDueToday.project.title;
+        projectSpan.classList.add("project-span");
+        button.textContent = todoDueToday.todo.priority;
+
+        li.addEventListener("click", () => {
+            detailsDiv.innerHTML = "";
+            renderTodoDetails(todoDueToday.todo, todoDueToday.project);
+        });
+
+        checkbox.addEventListener("change", () => {
+            completeTodo(todoDueToday.project.uuid, todoDueToday.todo.uuid);
+            refreshMainView();
+            renderTodoDetails(todoDueToday.todo, todoDueToday.project);
+        });
+
+        makeEditable(
+            titleSpan,
+            () => todoDueToday.todo.title,
+            (newValue) => {
+                changeTodoTitle(todoDueToday.todo, newValue);
+                titleSpan.textContent = todoDueToday.project.title;
+                refreshMainView();
+                renderTodoDetails(todoDueToday.todo, todoDueToday.project);
+            }
+        );
+
+        button.addEventListener("click", () => {
+            changeTodoPriority(todoDueToday.todo);
+            refreshMainView();
+            renderTodoDetails(todoDueToday.todo, todoDueToday.project);
+        });
+
+        li.appendChild(checkbox);
+        li.appendChild(titleSpan);
+        li.appendChild(projectSpan);
+        li.appendChild(button);
+        pendingUl.appendChild(li);
+    }
+
+    completedH2.style.display = "none";
+    title.textContent = "Today";
+    titleDiv.innerHTML = "";
+    titleDiv.appendChild(title);
+}
 
 function renderProjects() {
     const projectsUl = document.getElementById("projects");
@@ -25,6 +108,7 @@ function renderProjects() {
     projectsUl.innerHTML = "";
 
     for (let project of projects) {
+        if (project === projects[0]) continue;
         const li = document.createElement("li");
         const button = document.createElement("button");
         button.textContent = project.title;
@@ -40,7 +124,16 @@ function renderProjects() {
 }
 
 function renderTodos(project) {
+    setMainView(
+        () => renderTodos(project),
+        (todo) => {
+            const list = todo.completed ? project.completedTodos : project.pendingTodos;
+            const adjacentTodo = getAdjacentTodo(list, todo.uuid);
+            return adjacentTodo ? { todo: adjacentTodo, project } : undefined;
+        }
+    );
     const title = document.querySelector("h1");
+    const completedH2 = document.querySelector("h2");
     const pendingUl = document.getElementById("pending");
     const pendingTodos = project.pendingTodos;
     const completedUl = document.getElementById("completed");
@@ -48,6 +141,11 @@ function renderTodos(project) {
     const detailsDiv = document.getElementById("todo-details");
     const titleDiv = document.getElementById("project-title");
     const deleteProjectButton = document.createElement("button");
+    const addTodoButton = document.getElementById("add-todo-button");
+    const addTodoInput = document.getElementById("add-todo-input");
+
+    addTodoButton.style.display = "";
+    addTodoInput.style.display = "";
 
     setCurrentProject(project);
 
@@ -69,13 +167,13 @@ function renderTodos(project) {
 
         li.addEventListener("click", () => {
             detailsDiv.innerHTML = "";
-            renderTodoDetails(pendingTodo);
+            renderTodoDetails(pendingTodo, project);
         });
 
         checkbox.addEventListener("change", () => {
             completeTodo(project.uuid, pendingTodo.uuid);
-            renderTodos(project);
-            renderTodoDetails(pendingTodo);
+            refreshMainView();
+            renderTodoDetails(pendingTodo, project);
         });
 
         makeEditable(
@@ -84,15 +182,15 @@ function renderTodos(project) {
             (newValue) => {
                 changeTodoTitle(pendingTodo, newValue);
                 span.textContent = pendingTodo.title;
-                renderTodos(project);
-                renderTodoDetails(pendingTodo);
+                refreshMainView();
+                renderTodoDetails(pendingTodo, project);
             }
         );
 
         button.addEventListener("click", () => {
             changeTodoPriority(pendingTodo);
-            renderTodos(project);
-            renderTodoDetails(pendingTodo);
+            refreshMainView();
+            renderTodoDetails(pendingTodo, project);
         });
 
         li.appendChild(checkbox);
@@ -118,13 +216,13 @@ function renderTodos(project) {
 
         li.addEventListener("click", () => {
             detailsDiv.innerHTML = "";
-            renderTodoDetails(completedTodo);
+            renderTodoDetails(completedTodo, project);
         });
 
         checkbox.addEventListener("change", () => {
             uncompleteTodo(project.uuid, completedTodo.uuid);
-            renderTodos(project);
-            renderTodoDetails(completedTodo);
+            refreshMainView();
+            renderTodoDetails(completedTodo, project);
         });
 
         makeEditable(
@@ -133,15 +231,15 @@ function renderTodos(project) {
             (newValue) => {
                 changeTodoTitle(completedTodo, newValue);
                 span.textContent = completedTodo.title;
-                renderTodos(project);
-                renderTodoDetails(completedTodo);
+                refreshMainView();
+                renderTodoDetails(completedTodo, project);
             }
         );
 
         button.addEventListener("click", () => {
             changeTodoPriority(completedTodo);
-            renderTodos(project);
-            renderTodoDetails(completedTodo);
+            refreshMainView();
+            renderTodoDetails(completedTodo, project);
         });
 
         li.appendChild(checkbox);
@@ -150,6 +248,8 @@ function renderTodos(project) {
         li.appendChild(button);
         completedUl.appendChild(li);
     }
+
+    completedH2.style.display = completedTodos.length > 0 ? "" : "none";
 
     deleteProjectButton.textContent = "Delete Project";
     title.textContent = project.title;
@@ -180,15 +280,13 @@ function renderTodos(project) {
     );
 }
 
-function renderTodoDetails(todo) {
+function renderTodoDetails(todo, project) {
     const title = todo.title;
     const description = todo.description;
     const dueDate = todo.dueDate;
     const priority = todo.priority;
     const completed = todo.completed;
     const div = document.getElementById("todo-details");
-    const project = getCurrentProject();
-    let adjacentTodo;
 
     div.innerHTML = "";
 
@@ -209,8 +307,8 @@ function renderTodoDetails(todo) {
             uncompleteTodo(project.uuid, todo.uuid);
         }
 
-        renderTodos(project);
-        renderTodoDetails(todo);
+        refreshMainView();
+        renderTodoDetails(todo, project);
     });
 
     makeEditable(
@@ -219,8 +317,8 @@ function renderTodoDetails(todo) {
         (newValue) => {
             changeTodoTitle(todo, newValue);
             titleSpan.textContent = todo.title;
-            renderTodos(project);
-            renderTodoDetails(todo);
+            refreshMainView();
+            renderTodoDetails(todo, project);
         }
     );
 
@@ -234,8 +332,8 @@ function renderTodoDetails(todo) {
 
     priorityButton.addEventListener("click", () => {
         changeTodoPriority(todo);
-        renderTodos(project);
-        renderTodoDetails(todo);
+        refreshMainView();
+        renderTodoDetails(todo, project);
     });
 
     priorityDiv.appendChild(prioritySpan);
@@ -251,8 +349,8 @@ function renderTodoDetails(todo) {
 
     dueDateInput.addEventListener("change", () => {
         changeTodoDueDate(todo, dueDateInput.value);
-        renderTodos(project);
-        renderTodoDetails(todo);
+        refreshMainView();
+        renderTodoDetails(todo, project);
     });
 
     dueDateDiv.appendChild(dueDateSpan);
@@ -266,7 +364,7 @@ function renderTodoDetails(todo) {
 
     descriptionTextarea.addEventListener("blur", () => {
         changeTodoDescription(todo, descriptionTextarea.value);
-        renderTodoDetails(todo);
+        renderTodoDetails(todo, project);
     });
 
     descriptionTextarea.addEventListener("input", () => {
@@ -280,16 +378,12 @@ function renderTodoDetails(todo) {
     deleteButton.id = "delete-todo";
     deleteButton.textContent = "Delete Todo";
     deleteButton.addEventListener("click", () => {
-        if (completed === false) {
-            adjacentTodo = getAdjacentTodo(project.pendingTodos, todo.uuid);
-        } else {
-            adjacentTodo = getAdjacentTodo(project.completedTodos, todo.uuid);
-        }
+        const adjacentItem = getAdjacentInView(todo);
 
         deleteTodo(project.uuid, todo.uuid);
-        renderTodos(project);
-        if (adjacentTodo !== undefined) {
-            renderTodoDetails(adjacentTodo);
+        refreshMainView();
+        if (adjacentItem !== undefined) {
+            renderTodoDetails(adjacentItem.todo, adjacentItem.project);
         } else {
             div.innerHTML = "";
         }
@@ -323,7 +417,8 @@ function autoResize(textarea) {
     textarea.style.height = textarea.scrollHeight + "px";
 }
 
-export { 
+export {
+    renderTodosDueToday,
     renderProjects,
     renderTodos,
     renderTodoDetails,

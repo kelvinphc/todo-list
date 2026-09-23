@@ -1,5 +1,9 @@
 import { projects } from "./projects.js";
 import { notifyChange } from "./events.js";
+import { 
+    isToday,
+    toDate
+ } from "date-fns";
 
 function createTodo(projectUuid, title) {
     const todo = {
@@ -73,10 +77,22 @@ function changeTodoPriority(todo) {
     notifyChange();
 }
 
-function getAdjacentTodo(list, uuid) {
-    const index = list.findIndex((todo) => todo.uuid === uuid);
+function getAdjacentTodo(list, uuid, getUuid = (item) => item.uuid) {
+    const index = list.findIndex((item) => getUuid(item) === uuid);
     if (list.length === index + 1) return list[index - 1];
     return list[index + 1];
+}
+
+function getTodosDueToday() {
+    const dueToday = [];
+
+    for (let project of projects) {
+        project.pendingTodos.filter((todo) => {
+            if (isToday(toDate(todo.dueDate))) dueToday.push({ project, todo });
+        });
+    }
+
+    return dueToday;
 }
 
 export { 
@@ -88,5 +104,6 @@ export {
     changeTodoDescription, 
     changeTodoDueDate,
     changeTodoPriority,
-    getAdjacentTodo
+    getAdjacentTodo,
+    getTodosDueToday
 };

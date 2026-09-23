@@ -23,6 +23,8 @@ body {
     display: grid;
     grid-auto-rows: var(--spacing-4);
     align-items: center;
+    flex-grow: 1;
+    margin-bottom: var(--spacing-1);
 }
 
 #project-title {
@@ -34,10 +36,7 @@ body {
 
 nav ul {
     list-style-type: none;
-    display: grid;
-    grid-template-rows: 1fr var(--spacing-4);
-    padding: var(--spacing-1);
-    width: var(--projects-and-todo-details-width);
+    padding: 0;
     margin: 0;
 }
 
@@ -63,6 +62,8 @@ h2 {
     padding: var(--spacing-1);
     flex-grow: 1;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 #add-todo {
@@ -74,17 +75,13 @@ h2 {
     display: grid;
     grid-template-rows: repeat(4, var(--spacing-4)) 1fr;
     align-items: center;
-    width: var(--projects-and-todo-details-width);
+    min-width: var(--projects-and-todo-details-width);
     padding: var(--spacing-1);
+    flex: none;
 }
 
-#projects button {
+nav button {
     width: 100%;
-}
-
-#add-project {
-    margin: var(--spacing-1);
-    width: calc(var(--projects-and-todo-details-width) - 2 * var(--spacing-1));
 }
 
 #pending, #completed {
@@ -107,14 +104,16 @@ h2 {
     height: var(--spacing-2);
 }
 
-time {
+time, .project-span {
     margin-left: auto;
 }
 
 nav {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    padding: var(--spacing-1);
+    min-width: var(--projects-and-todo-details-width);
+    flex: none;
 }
 
 html, body {
@@ -129,4 +128,16 @@ textarea {
     align-self: start;
     resize: none;
     overflow: hidden;
+}
+
+#todos-scroll {
+    flex-grow: 1;
+    overflow: auto;
+    padding-right: var(--spacing-1);
+}
+
+#default {
+    display: grid;
+    grid-auto-rows: var(--spacing-4);
+    margin-bottom: var(--spacing-1);
 }

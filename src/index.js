@@ -1,14 +1,16 @@
 import "./styles.css";
-import { 
+import {
+    projects,
     createProject, 
     saveProjects,
     loadProjects,
     getCurrentProject
 } from "./projects.js";
 import { 
-    createTodo,
+    createTodo
 } from "./todos.js";
-import { 
+import {
+    renderTodosDueToday,
     renderProjects,
     renderTodos,
 } from "./ui.js";
@@ -22,13 +24,14 @@ loadProjects();
 renderProjects();
 
 const addProjectButton = document.getElementById("add-project");
-const addTodoButton = document.getElementById("add-todo-button");
-const addTodoInput = document.getElementById("add-todo-input");
 
 addProjectButton.addEventListener("click", () => {
     createProject();
     renderProjects();
 });
+
+const addTodoButton = document.getElementById("add-todo-button");
+const addTodoInput = document.getElementById("add-todo-input");
 
 function handleAddTodo() {
     const project = getCurrentProject();
@@ -47,3 +50,17 @@ addTodoInput.addEventListener("keydown", (e) => {
 });
 
 addTodoButton.addEventListener("click", handleAddTodo);
+
+const detailsDiv = document.getElementById("todo-details");
+const tasksButton = document.getElementById("tasks");
+
+tasksButton.addEventListener("click", () => {
+    detailsDiv.innerHTML = "";
+    renderTodos(projects[0]);
+});
+
+const todayButton = document.getElementById("today");
+
+todayButton.addEventListener("click", () => {
+    renderTodosDueToday();
+});
