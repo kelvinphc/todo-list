@@ -15,7 +15,8 @@ import {
     changeTodoDueDate,
     changeTodoPriority,
     getAdjacentTodo,
-    getTodosDueToday
+    getTodosDueToday,
+    getHighPriorityTodos
 } from "./todos.js";
 import { format } from "date-fns";
 
@@ -97,6 +98,80 @@ function renderTodosDueToday() {
 
     completedH2.style.display = "none";
     title.textContent = "Today";
+    titleDiv.innerHTML = "";
+    titleDiv.appendChild(title);
+}
+
+function renderHighPriorityTodos() {
+    const highPriorityTodos = getHighPriorityTodos();
+    setMainView(
+        renderHighPriorityTodos,
+        (todo) => getAdjacentTodo(highPriorityTodos, todo.uuid, (item) => item.todo.uuid)
+    );
+    const title = document.querySelector("h1");
+    const completedH2 = document.querySelector("h2");
+    const pendingUl = document.getElementById("pending");
+    const completedUl = document.getElementById("completed");
+    const detailsDiv = document.getElementById("todo-details");
+    const titleDiv = document.getElementById("project-title");
+    const addTodoButton = document.getElementById("add-todo-button");
+    const addTodoInput = document.getElementById("add-todo-input");
+
+    addTodoButton.style.display = "none";
+    addTodoInput.style.display = "none";
+    pendingUl.innerHTML = "";
+    completedUl.innerHTML = "";
+
+    for (let highPriorityTodo of highPriorityTodos) {
+        const li = document.createElement("li");
+        const checkbox = document.createElement("input");
+        const titleSpan = document.createElement("span");
+        const projectSpan = document.createElement("span");
+        const button = document.createElement("button");
+
+        checkbox.type = "checkbox";
+        titleSpan.textContent = highPriorityTodo.todo.title;
+        projectSpan.textContent = highPriorityTodo.project.title;
+        projectSpan.classList.add("project-span");
+        button.textContent = highPriorityTodo.todo.priority;
+
+        li.addEventListener("click", () => {
+            detailsDiv.innerHTML = "";
+            renderTodoDetails(highPriorityTodo.todo, highPriorityTodo.project);
+        });
+
+        checkbox.addEventListener("change", () => {
+            completeTodo(highPriorityTodo.project.uuid, highPriorityTodo.todo.uuid);
+            refreshMainView();
+            renderTodoDetails(highPriorityTodo.todo, highPriorityTodo.project);
+        });
+
+        makeEditable(
+            titleSpan,
+            () => highPriorityTodo.todo.title,
+            (newValue) => {
+                changeTodoTitle(highPriorityTodo.todo, newValue);
+                titleSpan.textContent = highPriorityTodo.project.title;
+                refreshMainView();
+                renderTodoDetails(highPriorityTodo.todo, highPriorityTodo.project);
+            }
+        );
+
+        button.addEventListener("click", () => {
+            changeTodoPriority(highPriorityTodo.todo);
+            refreshMainView();
+            renderTodoDetails(highPriorityTodo.todo, highPriorityTodo.project);
+        });
+
+        li.appendChild(checkbox);
+        li.appendChild(titleSpan);
+        li.appendChild(projectSpan);
+        li.appendChild(button);
+        pendingUl.appendChild(li);
+    }
+
+    completedH2.style.display = "none";
+    title.textContent = "High Priority";
     titleDiv.innerHTML = "";
     titleDiv.appendChild(title);
 }
@@ -419,6 +494,7 @@ function autoResize(textarea) {
 
 export {
     renderTodosDueToday,
+    renderHighPriorityTodos,
     renderProjects,
     renderTodos,
     renderTodoDetails,

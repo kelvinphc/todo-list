@@ -11,6 +11,7 @@ import {
 } from "./todos.js";
 import {
     renderTodosDueToday,
+    renderHighPriorityTodos,
     renderProjects,
     renderTodos,
 } from "./ui.js";
@@ -22,6 +23,8 @@ onChange(() => saveProjects());
 
 loadProjects();
 renderProjects();
+
+const detailsDiv = document.getElementById("todo-details");
 
 const addProjectButton = document.getElementById("add-project");
 
@@ -51,7 +54,6 @@ addTodoInput.addEventListener("keydown", (e) => {
 
 addTodoButton.addEventListener("click", handleAddTodo);
 
-const detailsDiv = document.getElementById("todo-details");
 const tasksButton = document.getElementById("tasks");
 
 tasksButton.addEventListener("click", () => {
@@ -63,4 +65,10 @@ const todayButton = document.getElementById("today");
 
 todayButton.addEventListener("click", () => {
     renderTodosDueToday();
+});
+
+const highPriorityButton = document.getElementById("high-priority");
+
+highPriorityButton.addEventListener("click", () => {
+    renderHighPriorityTodos();
 });

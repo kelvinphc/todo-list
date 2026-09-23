@@ -95,6 +95,18 @@ function getTodosDueToday() {
     return dueToday;
 }
 
+function getHighPriorityTodos() {
+    const highPriority = [];
+
+    for (let project of projects) {
+        project.pendingTodos.filter((todo) => {
+            if (todo.priority === "High") highPriority.push({ project, todo });
+        });
+    }
+
+    return highPriority;
+}
+
 export { 
     createTodo, 
     deleteTodo, 
@@ -105,5 +117,6 @@ export {
     changeTodoDueDate,
     changeTodoPriority,
     getAdjacentTodo,
-    getTodosDueToday
+    getTodosDueToday,
+    getHighPriorityTodos
 };
