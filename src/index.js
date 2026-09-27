@@ -12,6 +12,7 @@ import {
 import {
     renderTodosDueToday,
     renderHighPriorityTodos,
+    renderPlannedTodos,
     renderProjects,
     renderTodos,
 } from "./ui.js";
@@ -71,4 +72,10 @@ const highPriorityButton = document.getElementById("high-priority");
 
 highPriorityButton.addEventListener("click", () => {
     renderHighPriorityTodos();
+});
+
+const plannedButton = document.getElementById("planned");
+
+plannedButton.addEventListener("click", () => {
+    renderPlannedTodos();
 });

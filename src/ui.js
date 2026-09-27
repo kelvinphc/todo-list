@@ -16,7 +16,8 @@ import {
     changeTodoPriority,
     getAdjacentTodo,
     getTodosDueToday,
-    getHighPriorityTodos
+    getHighPriorityTodos,
+    getPlannedTodos
 } from "./todos.js";
 import { format } from "date-fns";
 
@@ -127,12 +128,15 @@ function renderHighPriorityTodos() {
         const checkbox = document.createElement("input");
         const titleSpan = document.createElement("span");
         const projectSpan = document.createElement("span");
+        const time = document.createElement("time");
         const button = document.createElement("button");
 
         checkbox.type = "checkbox";
         titleSpan.textContent = highPriorityTodo.todo.title;
         projectSpan.textContent = highPriorityTodo.project.title;
         projectSpan.classList.add("project-span");
+        time.datetime = highPriorityTodo.todo.dueDate;
+        if (highPriorityTodo.todo.dueDate !== "") time.textContent = format(highPriorityTodo.todo.dueDate, "EEE',' d MMM yyyy");
         button.textContent = highPriorityTodo.todo.priority;
 
         li.addEventListener("click", () => {
@@ -166,12 +170,91 @@ function renderHighPriorityTodos() {
         li.appendChild(checkbox);
         li.appendChild(titleSpan);
         li.appendChild(projectSpan);
+        li.appendChild(time);
         li.appendChild(button);
         pendingUl.appendChild(li);
     }
 
     completedH2.style.display = "none";
     title.textContent = "High Priority";
+    titleDiv.innerHTML = "";
+    titleDiv.appendChild(title);
+}
+
+function renderPlannedTodos() {
+    const plannedTodos = getPlannedTodos();
+    setMainView(
+        renderPlannedTodos,
+        (todo) => getAdjacentTodo(plannedTodos, todo.uuid, (item) => item.todo.uuid)
+    );
+    const title = document.querySelector("h1");
+    const completedH2 = document.querySelector("h2");
+    const pendingUl = document.getElementById("pending");
+    const completedUl = document.getElementById("completed");
+    const detailsDiv = document.getElementById("todo-details");
+    const titleDiv = document.getElementById("project-title");
+    const addTodoButton = document.getElementById("add-todo-button");
+    const addTodoInput = document.getElementById("add-todo-input");
+
+    addTodoButton.style.display = "none";
+    addTodoInput.style.display = "none";
+    pendingUl.innerHTML = "";
+    completedUl.innerHTML = "";
+
+    for (let plannedTodo of plannedTodos) {
+        const li = document.createElement("li");
+        const checkbox = document.createElement("input");
+        const titleSpan = document.createElement("span");
+        const projectSpan = document.createElement("span");
+        const time = document.createElement("time");
+        const button = document.createElement("button");
+
+        checkbox.type = "checkbox";
+        titleSpan.textContent = plannedTodo.todo.title;
+        projectSpan.textContent = plannedTodo.project.title;
+        projectSpan.classList.add("project-span");
+        time.datetime = plannedTodo.todo.dueDate;
+        if (plannedTodo.todo.dueDate !== "") time.textContent = format(plannedTodo.todo.dueDate, "EEE',' d MMM yyyy");
+        button.textContent = plannedTodo.todo.priority;
+
+        li.addEventListener("click", () => {
+            detailsDiv.innerHTML = "";
+            renderTodoDetails(plannedTodo.todo, plannedTodo.project);
+        });
+
+        checkbox.addEventListener("change", () => {
+            completeTodo(plannedTodo.project.uuid, plannedTodo.todo.uuid);
+            refreshMainView();
+            renderTodoDetails(plannedTodo.todo, plannedTodo.project);
+        });
+
+        makeEditable(
+            titleSpan,
+            () => plannedTodo.todo.title,
+            (newValue) => {
+                changeTodoTitle(plannedTodo.todo, newValue);
+                titleSpan.textContent = plannedTodo.project.title;
+                refreshMainView();
+                renderTodoDetails(plannedTodo.todo, plannedTodo.project);
+            }
+        );
+
+        button.addEventListener("click", () => {
+            changeTodoPriority(plannedTodo.todo);
+            refreshMainView();
+            renderTodoDetails(plannedTodo.todo, plannedTodo.project);
+        });
+
+        li.appendChild(checkbox);
+        li.appendChild(titleSpan);
+        li.appendChild(projectSpan);
+        li.appendChild(time);
+        li.appendChild(button);
+        pendingUl.appendChild(li);
+    }
+
+    completedH2.style.display = "none";
+    title.textContent = "Planned";
     titleDiv.innerHTML = "";
     titleDiv.appendChild(title);
 }
@@ -495,6 +578,7 @@ function autoResize(textarea) {
 export {
     renderTodosDueToday,
     renderHighPriorityTodos,
+    renderPlannedTodos,
     renderProjects,
     renderTodos,
     renderTodoDetails,

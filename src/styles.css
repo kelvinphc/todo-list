@@ -108,12 +108,17 @@ time, .project-span {
     margin-left: auto;
 }
 
+li:has(.project-span) time {
+    margin-left: 0;
+}
+
 nav {
     display: flex;
     flex-direction: column;
     padding: var(--spacing-1);
     min-width: var(--projects-and-todo-details-width);
     flex: none;
+    justify-content: space-between;
 }
 
 html, body {
@@ -140,4 +145,13 @@ textarea {
     display: grid;
     grid-auto-rows: var(--spacing-4);
     margin-bottom: var(--spacing-1);
+}
+
+#nav-scroll {
+    overflow: auto;
+    padding-right: var(--spacing-1);
+}
+
+#add-project {
+    margin-top: var(--spacing-1);
 }

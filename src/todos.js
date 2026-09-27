@@ -1,6 +1,7 @@
 import { projects } from "./projects.js";
 import { notifyChange } from "./events.js";
-import { 
+import {
+    compareAsc,
     isToday,
     toDate
  } from "date-fns";
@@ -107,6 +108,20 @@ function getHighPriorityTodos() {
     return highPriority;
 }
 
+function getPlannedTodos() {
+    const planned = [];
+
+    for (let project of projects) {
+        project.pendingTodos.filter((todo) => {
+            if (todo.dueDate !== "") planned.push({ project, todo });
+        });
+    }
+
+    planned.sort((a, b) => compareAsc(toDate(a.todo.dueDate), toDate(b.todo.dueDate)));
+
+    return planned;
+}
+
 export { 
     createTodo, 
     deleteTodo, 
@@ -118,5 +133,6 @@ export {
     changeTodoPriority,
     getAdjacentTodo,
     getTodosDueToday,
-    getHighPriorityTodos
+    getHighPriorityTodos,
+    getPlannedTodos
 };
