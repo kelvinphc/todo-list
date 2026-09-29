@@ -552,6 +552,7 @@ function renderTodoDetails(todo, project) {
 function makeEditable(element, getValue, onSave) {
     element.onclick = () => {
         const input = document.createElement("input");
+        input.classList.add("editable-input");
         input.value = getValue();
 
         element.replaceWith(input);
