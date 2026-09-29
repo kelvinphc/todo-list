@@ -3,8 +3,7 @@ import {
     deleteProject, 
     changeProjectTitle,
     getPreviousProject,
-    setCurrentProject,
-    getCurrentProject
+    setCurrentProject
 } from "./projects.js";
 import { 
     deleteTodo,

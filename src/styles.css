@@ -7,13 +7,10 @@
     --spacing-2: 24px;
     --spacing-3: 32px;
     --spacing-4: 48px;
-    --spacing-5: 64px;
     --projects-and-todo-details-width: 256px;
     --colour-1: #e6e6e6;
     --colour-2: #cccccc;
     --colour-3: #b3b3b3;
-    --colour-4: #999999;
-    --colour-5: #808080;
 }
 
 body {
